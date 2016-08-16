@@ -1,11 +1,24 @@
  bc C
+bc C 
 c C 1
  C 1.
 C 1.A
-                           Jef
-                         Jeffe
-                       Jeffers
-                     Jefferson
-                   Jefferson C
-                 Jefferson Cru
-               Jefferson Cruz 
+ 1.A 
+1.A b
+.A bc
+A bc 
+ bc C
+la Cambada 
+a Cambada  
+ Cambada  O
+Cambada  Ol
+ambada  Ola
+mbada  Ola 
+bada  Ola C
+           Jefferson Cruz Nasc
+         Jefferson Cruz Nascim
+       Jefferson Cruz Nascimen
+     Jefferson Cruz Nascimento
+   Jefferson Cruz Nascimento  
+ Jefferson Cruz Nascimento    
+efferson Cruz Nascimento      
