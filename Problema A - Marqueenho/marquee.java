@@ -1,22 +1,20 @@
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class marquee {
+
     public static String geraEspacos(int tam) {
         return new String(new char[tam]).replace("\0", " ");
     }
-    
+
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
-        int tamMarquee, tamTexto, tempoDecorrido, tamPrimeiraPalavra;
-        String texto, textoFinal, aux;
-        ArrayList<String> marquee;
+        int tamMarquee, tamTexto, tempoDecorrido, ultimoSeparador = 0;
+        String texto;
+        char aux;
+        String marquee;
         String separadores = "[ ,.:;!?]";
-        Pattern pattern = Pattern.compile(separadores);
-        Matcher matcher;
 
         while (scan.hasNext()) {
             tamMarquee = scan.nextInt();
@@ -24,55 +22,48 @@ class marquee {
             scan.nextLine(); // Consome o \n do fim da linha, para ler corretamente a linha do texto
             texto = scan.nextLine();
             tempoDecorrido = scan.nextInt();
-            
-            matcher = pattern.matcher(texto); // Procura os separadores no texto
-
-            if (matcher.find()) {
-                // Caso encontre, pega o índice do primeiro match pra usar como tamanho da primeira palavra
-                tamPrimeiraPalavra = matcher.start();
-            } else {
-                // Caso não encontre, não há separadores, então só há uma palavra
-                tamPrimeiraPalavra = tamTexto;
-            }
-            
-            // Se o texto for menor que o marquee
-            if (tamTexto < tamMarquee) {
-                // Completa o texto com espaços em branco até chegar ao tamanho do marquee
-                texto += geraEspacos(tamMarquee - tamTexto);
-            }
-            
-            // Se retirando a primeira palavra do texto, ele fica menor que o marquee
-            if (texto.length() - tamPrimeiraPalavra < tamMarquee) {
-                // Adiciona o espaço em branco ao final do texto equivalente ao tamanho da primeira palavra
-                texto += geraEspacos(tamPrimeiraPalavra - 1);
-            }
-
-            // Transforma o texto em um ArrayList de caracteres
-            marquee = new ArrayList<>(Arrays.asList(texto.split("")));
-
-            // O estado inicial do marquee se repete em determinado tempo
-            if (tempoDecorrido > tamMarquee) {
-                tempoDecorrido = (tempoDecorrido % (texto.length())) + 1;
-            }
 
             // Corre o "tempo" e faz as trocas de posição
             for (int i = 0; i < tempoDecorrido; i++) {
-                // Pega o primeiro
-                aux = marquee.get(0);
-                // Adiciona ao final
-                marquee.add(aux);
-                // Remove do começo
-                marquee.remove(0);
+                aux = texto.charAt(0);
+                texto = texto.substring(1) + aux;
             }
-
-            // Compõe a String de saída
-            textoFinal = "";
-            for (int i = 0; i < tamMarquee; i++) {
-                textoFinal += marquee.get(i);
+            
+            // Pega a posição do último separador
+            if (texto.substring(texto.length() - 1).matches(separadores)) {
+                ultimoSeparador = texto.length() - 1;
+            } else {
+                for (int i = texto.length() - 1; i >= 0; i--) {
+                    if (texto.substring(i - 1, i).matches(separadores)) {
+                        ultimoSeparador = i - 1;
+                        break;
+                    }
+                }
             }
-
+               
+            // Se o primeiro ou o último dígito são separadores
+            if (texto.substring(0, 1).matches(separadores) || texto.substring(texto.length() - 1).matches(separadores)) {
+                // Se o marquee for menor ou igual ao texto
+                if (tamMarquee <= tamTexto) {
+                    // Marquee corta o texto com seu tamanho
+                    marquee = texto.substring(0, tamMarquee);
+                } else {
+                    // Se o texto é menor, só pegar o texto inteiro
+                    marquee = texto;
+                }
+            // Se o marquee for maior ou igual ao texto
+            // Ou se o último separador está posicionado dentro do espaço do marquee (mas a palavra ainda não sumiu pela esquerda)
+            } else if (tamMarquee >= tamTexto || ultimoSeparador < tamMarquee - 1) {
+                // Pega somente até o último separador
+                marquee = texto.substring(0, ultimoSeparador + 1);
+            // Se não se encaixa em nenhum dos casos anteriores
+            } else {
+                // Pega o tamanho do marquee mesmo
+                marquee = texto.substring(0, tamMarquee);
+            }
+            
             // Imprime a saída
-            System.out.println(textoFinal);
+            System.out.println(marquee);
         }
     }
 }
