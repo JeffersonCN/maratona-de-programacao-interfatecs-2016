@@ -3,10 +3,6 @@ import java.util.*;
 
 class marquee {
 
-    public static String geraEspacos(int tam) {
-        return new String(new char[tam]).replace("\0", " ");
-    }
-
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
